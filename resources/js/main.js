@@ -1,5 +1,5 @@
 var server = "http://localhost:8000/";
-var todolist_server = server + "todo/"
+var todolist_server = server + "todo"
 
 function getCompletedTodos(){
 	var result = null
@@ -67,7 +67,7 @@ function addItemToBackend (value) {
 	console.log(payload);
 	$.ajax({
                 type: "POST",
-                url: todolist_server.slice(0, -1),
+                url: todolist_server,
 		data: payload,
 		async: false,
                 success: function(data){
@@ -75,7 +75,7 @@ function addItemToBackend (value) {
 			console.log(data);
                 }
         });
-        return result.ID;
+        return result.Id;
 }
 
 function renderTodoList() {
@@ -83,13 +83,13 @@ function renderTodoList() {
 
   for (var i = 0; i < data.todo.length; i++) {
     var value = data.todo[i].Description;
-    var id = data.todo[i].ID;
+    var id = data.todo[i].Id;
     addItemToDOM(value, id);
   }
 
   for (var j = 0; j < data.completed.length; j++) {
     var value = data.completed[j].Description;
-    var id = data.completed[j].ID;
+    var id = data.completed[j].Id;
     addItemToDOM(value, id, true);
   }
 }
@@ -112,7 +112,7 @@ function removeItem() {
 function removeItemInBackend (item) {
 	console.log(item.id)
 	$.ajax({
-                url: todolist_server + item.id,
+                url: todolist_server + "/" + item.id,
 		type: 'DELETE',
 		async: false,
 		success: function(data) {
@@ -130,23 +130,28 @@ function completeItem() {
   if (id === 'todo') {
     data.todo.splice(data.todo.indexOf(value), 1);
     data.completed.push(value);
+	console.log(item);
+    updateItemInBackend(item, true);
   } else {
     data.completed.splice(data.completed.indexOf(value), 1);
     data.todo.push(value);
+	console.log(item);
+    updateItemInBackend(item, false);
   }
   // Check if the item should be added to the completed list or to re-added to the todo list
   var target = (id === 'todo') ? document.getElementById('completed'):document.getElementById('todo');
 
   parent.removeChild(item);
   target.insertBefore(item, target.childNodes[0]);
-  completeItemInBackend(item);
 }
 
-function completeItemInBackend (item) {
+function updateItemInBackend (item, completed) {
         console.log(item.id)
+	payload = {'completed': completed};
         $.ajax({
-                url: todolist_server + item.id,
-                type: 'PATCH',
+                url: todolist_server + "/" + item.id,
+                type: 'POST',
+		data: payload,
                 async: false,
                 success: function(data) {
                         console.log(data)
