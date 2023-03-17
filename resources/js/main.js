@@ -27,7 +27,20 @@ function getIncompleteTodos(){
 	return result;
 }
 
-var data = {todo: getIncompleteTodos() || [] , completed: getCompletedTodos() || []};
+function getNotPostponedTodos(){
+	var result = null
+	$.ajax({
+		type: "GET",
+		url: server + 'not-postponed',
+	        async: false,
+		success: function(data){
+			result = data;
+		}
+	});
+	return result;
+}
+
+var data = {todo: getNotPostponedTodos() || [] , completed: getCompletedTodos() || []};
 console.log(data);
 
 // Remove and complete icons in SVG format
