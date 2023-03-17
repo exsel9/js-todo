@@ -14,19 +14,6 @@ function getCompletedTodos(){
 	return result;
 }
 
-function getIncompleteTodos(){
-	var result = null
-	$.ajax({
-		type: "GET",
-		url: server + "todo-incomplete",
-	        async: false,
-		success: function(data){
-			result = data;
-		}
-	});
-	return result;
-}
-
 function getNotPostponedTodos(){
 	var result = null
 	$.ajax({
@@ -40,20 +27,7 @@ function getNotPostponedTodos(){
 	return result;
 }
 
-function getFocusTodos(){
-	var result = null
-	$.ajax({
-		type: "GET",
-		url: server + 'todo-focus',
-	        async: false,
-		success: function(data){
-			result = data;
-		}
-	});
-	return result;
-}
-
-var data = {todo: getNotPostponedTodos() || [], completed: getCompletedTodos() || [], focus: getFocusTodos() || []};
+var data = {todo: getNotPostponedTodos() || [], completed: getCompletedTodos() || []};
 console.log(data);
 
 // Remove and complete icons in SVG format
@@ -105,18 +79,13 @@ function addItemToBackend (value) {
 }
 
 function renderTodoList() {
-  if (!data.focus.length && !data.todo.length && !data.completed.length) return;
+  if (!data.todo.length && !data.completed.length) return;
   
-  for (var i = 0; i < data.focus.length; i++) {
-    var value = data.focus[i].Item;
-    var id = data.focus[i].Id;
-    addItemToDOM(value, id, false, true);
-  }
-
   for (var i = 0; i < data.todo.length; i++) {
     var value = data.todo[i].Item;
     var id = data.todo[i].Id;
-    addItemToDOM(value, id, false, false);
+    var focus = data.todo[i].Focused;
+    addItemToDOM(value, id, false, focus);
   }
 
   for (var j = 0; j < data.completed.length; j++) {
