@@ -1,5 +1,5 @@
-var server = "http://localhost:8000/";
-var todolist_server = server + "todo"
+var server = "http://localhost:4040/";
+var todolist_server = server + "add"
 
 function getCompletedTodos(){
 	var result = null
@@ -63,7 +63,7 @@ function addItem (value) {
 
 function addItemToBackend (value) {
 	var result = null;
-	payload = {'description': value};
+	payload = {'item': value};
 	console.log(payload);
 	$.ajax({
                 type: "POST",
