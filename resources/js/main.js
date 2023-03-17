@@ -149,12 +149,12 @@ function updateItemInBackend (item, completed) {
         console.log(item.id)
 	payload = {'completed': completed};
         $.ajax({
-                url: todolist_server + "/" + item.id,
+                url: server + 'complete/' + item.id,
                 type: 'POST',
-		data: payload,
+                data: payload,
                 async: false,
                 success: function(data) {
-                        console.log(data)
+                  console.log(data)
                 }
         });
 }
