@@ -82,13 +82,13 @@ function renderTodoList() {
   if (!data.todo.length && !data.completed.length) return;
 
   for (var i = 0; i < data.todo.length; i++) {
-    var value = data.todo[i].Description;
+    var value = data.todo[i].Item;
     var id = data.todo[i].Id;
     addItemToDOM(value, id);
   }
 
   for (var j = 0; j < data.completed.length; j++) {
-    var value = data.completed[j].Description;
+    var value = data.completed[j].Item;
     var id = data.completed[j].Id;
     addItemToDOM(value, id, true);
   }
