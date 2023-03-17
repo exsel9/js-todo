@@ -40,7 +40,20 @@ function getNotPostponedTodos(){
 	return result;
 }
 
-var data = {todo: getNotPostponedTodos() || [] , completed: getCompletedTodos() || []};
+function getFocusTodos(){
+	var result = null
+	$.ajax({
+		type: "GET",
+		url: server + 'todo-focus',
+	        async: false,
+		success: function(data){
+			result = data;
+		}
+	});
+	return result;
+}
+
+var data = {todo: getNotPostponedTodos() || [], completed: getCompletedTodos() || [], focus: getFocusTodos() || []};
 console.log(data);
 
 // Remove and complete icons in SVG format
@@ -92,18 +105,24 @@ function addItemToBackend (value) {
 }
 
 function renderTodoList() {
-  if (!data.todo.length && !data.completed.length) return;
+  if (!data.focus.length && !data.todo.length && !data.completed.length) return;
+  
+  for (var i = 0; i < data.focus.length; i++) {
+    var value = data.focus[i].Item;
+    var id = data.focus[i].Id;
+    addItemToDOM(value, id, false, true);
+  }
 
   for (var i = 0; i < data.todo.length; i++) {
     var value = data.todo[i].Item;
     var id = data.todo[i].Id;
-    addItemToDOM(value, id);
+    addItemToDOM(value, id, false, false);
   }
 
   for (var j = 0; j < data.completed.length; j++) {
     var value = data.completed[j].Item;
     var id = data.completed[j].Id;
-    addItemToDOM(value, id, true);
+    addItemToDOM(value, id, true, false);
   }
 }
 
@@ -174,8 +193,12 @@ function updateItemInBackend (item, completed) {
 
 
 // Adds a new item to the todo list
-function addItemToDOM(text, id, completed) {
-  var list = (completed) ? document.getElementById('completed'):document.getElementById('todo');
+function addItemToDOM(text, id, completed, focused) {
+  var list = (completed)
+      ? document.getElementById('completed')
+      : (focused)
+          ? document.getElementById('focus')
+          : document.getElementById('todo');
 
   var item = document.createElement('li');
   item.innerText = text;
