@@ -1,11 +1,11 @@
 var server = "http://localhost:4040/";
 var todolist_server = server + "add"
 
-function getCompletedTodos(){
+function getTodayTodos(){
 	var result = null
 	$.ajax({
 		type: "GET",
-		url: server + "todo-completed",
+		url: server + "today",
 	        async: false,
 		success: function(data){
 			result = data;
@@ -14,20 +14,7 @@ function getCompletedTodos(){
 	return result;
 }
 
-function getNotPostponedTodos(){
-	var result = null
-	$.ajax({
-		type: "GET",
-		url: server + 'not-postponed',
-	        async: false,
-		success: function(data){
-			result = data;
-		}
-	});
-	return result;
-}
-
-var data = {todo: getNotPostponedTodos() || [], completed: getCompletedTodos() || []};
+var data = {todo: getTodayTodos() || [], completed: []};
 console.log(data);
 
 // Remove and complete icons in SVG format
@@ -79,19 +66,14 @@ function addItemToBackend (value) {
 }
 
 function renderTodoList() {
-  if (!data.todo.length && !data.completed.length) return;
+  if (!data.todo.length) return;
   
   for (var i = 0; i < data.todo.length; i++) {
     var value = data.todo[i].Item;
     var id = data.todo[i].Id;
     var focus = data.todo[i].Focused;
-    addItemToDOM(value, id, false, focus);
-  }
-
-  for (var j = 0; j < data.completed.length; j++) {
-    var value = data.completed[j].Item;
-    var id = data.completed[j].Id;
-    addItemToDOM(value, id, true, false);
+    var completed = data.todo[i].Completed;
+    addItemToDOM(value, id, completed, focus);
   }
 }
 
