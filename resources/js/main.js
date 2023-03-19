@@ -72,7 +72,7 @@ function renderTodoList() {
     var value = data.todo[i].Item;
     var id = data.todo[i].Id;
     var focus = data.todo[i].Focused;
-    var completed = data.todo[i].Completed;
+    var completed = data.todo[i].CompletedDate != null;
     addItemToDOM(value, id, completed, focus);
   }
 }
