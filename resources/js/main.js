@@ -110,7 +110,7 @@ function completeItem() {
   var id = parent.id;
   var value = item.innerText;
 
-  if (id === 'todo') {
+  if (id === 'todo' || id === 'focus') {
     data.todo.splice(data.todo.indexOf(value), 1);
     data.completed.push(value);
 	  console.log(item);
@@ -122,7 +122,7 @@ function completeItem() {
     updateItemInBackend(item, false);
   }
   // Check if the item should be added to the completed list or to re-added to the todo list
-  var target = (id === 'todo') ? document.getElementById('completed'):document.getElementById('todo');
+  var target = (id === 'completed') ? document.getElementById('todo') : document.getElementById('completed');
 
   parent.removeChild(item);
   target.insertBefore(item, target.childNodes[0]);
@@ -153,7 +153,6 @@ function updateItemInBackend (item, completed) {
           });
         }
 }
-
 
 // Adds a new item to the todo list
 function addItemToDOM(text, id, completed, focused) {
