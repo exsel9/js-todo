@@ -113,12 +113,12 @@ function completeItem() {
   if (id === 'todo') {
     data.todo.splice(data.todo.indexOf(value), 1);
     data.completed.push(value);
-	console.log(item);
+	  console.log(item);
     updateItemInBackend(item, true);
   } else {
     data.completed.splice(data.completed.indexOf(value), 1);
     data.todo.push(value);
-	console.log(item);
+	  console.log(item);
     updateItemInBackend(item, false);
   }
   // Check if the item should be added to the completed list or to re-added to the todo list
@@ -130,16 +130,28 @@ function completeItem() {
 
 function updateItemInBackend (item, completed) {
         console.log(item.id)
-	payload = {'completed': completed};
-        $.ajax({
-                url: server + 'complete/' + item.id,
-                type: 'POST',
-                data: payload,
-                async: false,
-                success: function(data) {
-                  console.log(data)
-                }
-        });
+        payload = {'completed': completed};
+        if (completed) {
+          $.ajax({
+                  url: server + 'complete/' + item.id,
+                  type: 'POST',
+                  data: payload,
+                  async: false,
+                  success: function(data) {
+                    console.log(data)
+                  }
+          });
+        } else {
+          $.ajax({
+            url: server + 'incomplete/' + item.id,
+            type: 'POST',
+            data: payload,
+            async: false,
+            success: function(data) {
+              console.log(data)
+            }
+          });
+        }
 }
 
 
