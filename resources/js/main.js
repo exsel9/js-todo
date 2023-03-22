@@ -61,7 +61,7 @@ function addItemToBackend (value) {
 			console.log(data);
     }
   });
-  return result.Id;
+  return result.id;
 }
 
 function renderTodoList() {
