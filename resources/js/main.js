@@ -1,5 +1,4 @@
 var server = "http://localhost:4040/";
-var todolist_server = server + "add"
 
 function getTodayTodos(){
 	var result = null
@@ -14,7 +13,7 @@ function getTodayTodos(){
 	return result;
 }
 
-var data = {todo: getTodayTodos() || [], completed: []};
+var data = {focus: [], todo: getTodayTodos() || [], completed: []};
 console.log(data);
 
 // Remove and complete icons in SVG format
@@ -53,16 +52,16 @@ function addItemToBackend (value) {
 	payload = {'item': value};
 	console.log(payload);
 	$.ajax({
-                type: "POST",
-                url: todolist_server,
+    type: "POST",
+    url: server + 'add',
 		data: payload,
 		async: false,
-                success: function(data){
-                        result = data;
+    success: function(data){
+      result = data;
 			console.log(data);
-                }
-        });
-        return result.Id;
+    }
+  });
+  return result.Id;
 }
 
 function renderTodoList() {
@@ -85,8 +84,12 @@ function removeItem() {
 
   if (id === 'todo') {
     data.todo.splice(data.todo.indexOf(value), 1);
-  } else {
+  }
+  if (id === 'completed') {
     data.completed.splice(data.completed.indexOf(value), 1);
+  }
+  if (id === 'focus') {
+    data.focus.splice(data.focus.indexOf(value), 1);
   }
   parent.removeChild(item);
   removeItemInBackend(item);
@@ -95,13 +98,13 @@ function removeItem() {
 function removeItemInBackend (item) {
 	console.log(item.id)
 	$.ajax({
-                url: todolist_server + "/" + item.id,
-		type: 'DELETE',
+    url: server + "delete/" + item.id,
+		type: 'POST',
 		async: false,
 		success: function(data) {
 			console.log(data)
 		}
-        });
+  });
 }
 
 function completeItem() {
