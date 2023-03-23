@@ -133,7 +133,7 @@ ul.todo li:last-of-type {
 }
 
 ul.todo li .buttons {
-  width: 100px;
+  width: 150px;
   height: 50px;
 
   position: absolute;
@@ -216,6 +216,22 @@ ul.todo li .buttons button.remove:hover svg .fill {
 
 ul.todo li .buttons button.complete svg .fill {
   fill: #25b99a;
+}
+
+ul.todo#focus li .buttons button.focused svg .fill {
+  fill: #466fd0;
+}
+
+ul.todo#focus li .buttons button.focused:hover svg .fill {
+  fill: #c0cecb;
+}
+
+ul.todo:not(#focus) li .buttons button.focused svg .fill {
+  fill: #c0cecb;
+}
+
+ul.todo:not(#focus) li .buttons button.focused:hover svg .fill {
+  fill: #466fd0;
 }
 
 ul.todo#todo,
