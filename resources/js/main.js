@@ -113,12 +113,14 @@ function completeItem() {
   var parent = item.parentNode;
   var id = parent.id;
   var value = item.innerText;
+  var completed = false;
 
   if (id === 'todo' || id === 'focus') {
     data.todo.splice(data.todo.indexOf(value), 1);
     data.completed.push(value);
 	  console.log(item);
     updateItemInBackend(item, true);
+    completed = true;
   } else {
     data.completed.splice(data.completed.indexOf(value), 1);
     data.todo.push(value);
@@ -129,7 +131,8 @@ function completeItem() {
   var target = (id === 'completed') ? document.getElementById('todo') : document.getElementById('completed');
 
   parent.removeChild(item);
-  target.insertBefore(item, target.childNodes[0]);
+  // target.insertBefore(item, target.childNodes[0]);
+  addItemToDOM(value, id, completed, false);
 }
 
 function focusItem() {
@@ -281,9 +284,11 @@ function addItemToDOM(text, id, completed, focused) {
   // Add click event for focus the item
   postpone.addEventListener('click', postponeItem);
 
-  buttons.appendChild(remove);
-  buttons.appendChild(focused);
-  buttons.appendChild(postpone);
+  if (!completed) {
+    buttons.appendChild(remove);
+    buttons.appendChild(focused);
+    buttons.appendChild(postpone);
+  }
   buttons.appendChild(complete);
 
   item.appendChild(buttons);
