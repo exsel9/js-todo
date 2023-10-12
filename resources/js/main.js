@@ -256,6 +256,9 @@ function addItemToDOM(value, id, completed, focused) {
   text.classList.add('text');
   text.innerText = value;
 
+  var completeButtons = document.createElement('div');
+  completeButtons.classList.add('completeButtons');
+
   var buttons = document.createElement('div');
   buttons.classList.add('buttons');
 
@@ -288,12 +291,13 @@ function addItemToDOM(value, id, completed, focused) {
   postpone.addEventListener('click', postponeItem);
 
   if (!completed) {
-    buttons.appendChild(remove);
     buttons.appendChild(focused);
     buttons.appendChild(postpone);
+    buttons.appendChild(remove);
   }
-  buttons.appendChild(complete);
+  completeButtons.appendChild(complete);
 
+  item.appendChild(completeButtons);
   item.appendChild(text);
   item.appendChild(buttons);
  
