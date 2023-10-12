@@ -242,7 +242,7 @@ function postponeItemInBackend(item) {
 }
 
 // Adds a new item to the todo list
-function addItemToDOM(text, id, completed, focused) {
+function addItemToDOM(value, id, completed, focused) {
   var list = (completed)
       ? document.getElementById('completed')
       : (focused)
@@ -250,8 +250,11 @@ function addItemToDOM(text, id, completed, focused) {
           : document.getElementById('todo');
 
   var item = document.createElement('li');
-  item.innerText = text;
   item.id = id;
+
+  var text = document.createElement('div');
+  text.classList.add('text');
+  text.innerText = value;
 
   var buttons = document.createElement('div');
   buttons.classList.add('buttons');
@@ -291,7 +294,8 @@ function addItemToDOM(text, id, completed, focused) {
   }
   buttons.appendChild(complete);
 
+  item.appendChild(text);
   item.appendChild(buttons);
-
+ 
   list.insertBefore(item, list.childNodes[0]);
 }

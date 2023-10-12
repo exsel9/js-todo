@@ -132,13 +132,18 @@ ul.todo li:last-of-type {
   margin: 0;
 }
 
+ul.todo li .text {
+  position: absolute;
+  left: 200px;
+}
+
 ul.todo li .buttons {
   width: 200px;
   height: 50px;
 
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
 }
 
 ul.todo:not(#completed) li .buttons button {
